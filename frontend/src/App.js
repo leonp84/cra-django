@@ -6,27 +6,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css';
 import image from './assets/images/logo.svg';
 
-// class GetData ({ day }) extends React.Component  {
-// 	state = {
-// 		weekday: [],
-// 	};
-
-// 	componentDidMount() {
-// 		axios.get('http://127.0.0.1:8000/api/data/').then((res) => {
-// 			const weekday = res.data[0].tue;
-// 			this.setState({ weekday });
-// 		});
-// 	}
-// 	render() {
-// 		return <div>{this.state.weekday}</div>;
-// 	}
-// }
-
 function GetData(setVarDay) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get('http://127.0.0.1:8000/api/data/');
+				const response = await axios.get(
+					'https://django-react-test-leonp84-f46babdc21bd.herokuapp.com/api/data/'
+				);
 				const mon = response.data[0].mon;
 				const tue = response.data[0].tue;
 				const wed = response.data[0].wed;
@@ -143,8 +129,6 @@ function App() {
 					))}
 				</div>
 			</main>
-
-			<h1>Data coming: {GetData('mon')} €</h1>
 		</>
 	);
 }
