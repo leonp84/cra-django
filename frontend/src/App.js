@@ -147,7 +147,10 @@ function HandleClick(varDay) {
 		sat: varDay[5],
 		sun: varDay[6],
 	};
-	axios.post('http://127.0.0.1:8000/api/data/', newData).then((res) => {
+	let url =
+		'https://django-react-test-leonp84-f46babdc21bd.herokuapp.com/api/data/';
+	// let url = 'http://127.0.0.1:8000/api/data/'
+	axios.post(url, newData).then((res) => {
 		console.log(res);
 		console.log(res.data);
 	});
