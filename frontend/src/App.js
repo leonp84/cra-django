@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css';
@@ -64,8 +66,7 @@ function SpendingFooter(updateData) {
 				</div>
 				<div className="d-flex flex-column align-items-end">
 					<span className="font-bold">{whatsLeft}%</span>
-					<br />
-					<span className="small text-muted">of last month (€830)</span>
+					<span className="small text-muted">of last week (€830)</span>
 				</div>
 			</div>
 		</>
@@ -117,6 +118,25 @@ function SingleDayInput({ index, day, amount, setVarDay, varDay }) {
 	);
 }
 
+function ShowToast({ show, setShow }) {
+	const toggleShow = () => setShow(!show);
+
+	return (
+		<ToastContainer
+			className="p-3"
+			position={'bottom-end'}
+			style={{ zIndex: 1 }}>
+			<Toast show={show} onClose={toggleShow} delay={3000} autohide>
+				<Toast.Header className="bg-success text-white">
+					<strong className="me-auto">Saved</strong>
+					<small>Just Now</small>
+				</Toast.Header>
+				<Toast.Body>Budget updated</Toast.Body>
+			</Toast>
+		</ToastContainer>
+	);
+}
+
 function HandleClick(varDay) {
 	let newData = {
 		mon: varDay[0],
@@ -136,6 +156,7 @@ function HandleClick(varDay) {
 function App() {
 	let weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 	const [varDay, setVarDay] = useState([]);
+	const [show, setShow] = useState(false);
 	GetData(setVarDay);
 	let updateData = varDay;
 
@@ -166,9 +187,13 @@ function App() {
 				<button
 					type="button"
 					className=" mt-3 w-340 btn btn-secondary btn-lg"
-					onClick={() => HandleClick(updateData)}>
+					onClick={function () {
+						HandleClick(updateData);
+						setShow(true);
+					}}>
 					Save
 				</button>
+				<ShowToast show={show} setShow={setShow} />
 			</main>
 		</>
 	);
