@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import dj_database_url
 from pathlib import Path
 import os
+if os.path.isfile('env.py'):
+    import env  # noqa
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u93*a*puqq$sjjw&%_qm6culf07$*6))3(1$8oggkus3_we86f'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,7 +34,6 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.gitpod.io',
     'https://*.herokuapp.io',
 ]
 
@@ -92,7 +93,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse("postgresql://test-admin:XvGwku7DnA6J@ep-lucky-heart-a2sz40lf.eu-central-1.aws.neon.tech/django-react-test?sslmode=require")
+    'default': dj_database_url.parse(os.getenv("DATABASE_URL"))
 }
 
 # DATABASES = {
@@ -140,7 +141,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [ os.path.join( BASE_DIR, 'frontend/build/static') ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/build/static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
