@@ -1,9 +1,47 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css';
 import image from './assets/images/logo.svg';
+
+// class GetData ({ day }) extends React.Component  {
+// 	state = {
+// 		weekday: [],
+// 	};
+
+// 	componentDidMount() {
+// 		axios.get('http://127.0.0.1:8000/api/data/').then((res) => {
+// 			const weekday = res.data[0].tue;
+// 			this.setState({ weekday });
+// 		});
+// 	}
+// 	render() {
+// 		return <div>{this.state.weekday}</div>;
+// 	}
+// }
+
+function GetData(setVarDay) {
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await axios.get('http://127.0.0.1:8000/api/data/');
+				const mon = response.data[0].mon;
+				const tue = response.data[0].tue;
+				const wed = response.data[0].wed;
+				const thu = response.data[0].thu;
+				const fri = response.data[0].fri;
+				const sat = response.data[0].sat;
+				const sun = response.data[0].sun;
+				setVarDay([mon, tue, wed, thu, fri, sat, sun]);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+		fetchData();
+	}, [setVarDay]);
+}
 
 function BalanceHeader() {
 	return (
@@ -77,8 +115,10 @@ function SingleDayInput({ index, day, amount, setVarDay }) {
 }
 
 function App() {
-	let [varDay, setVarDay] = useState([150, 200, 125, 50, 200, 70, 185]);
 	let weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+	const [varDay, setVarDay] = useState([]);
+	GetData(setVarDay);
+
 	return (
 		<>
 			<main className="d-flex flex-column align-items-center justify-content-center vh-100">
@@ -103,6 +143,8 @@ function App() {
 					))}
 				</div>
 			</main>
+
+			<h1>Data coming: {GetData('mon')} €</h1>
 		</>
 	);
 }
