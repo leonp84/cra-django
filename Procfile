@@ -1,1 +1,1 @@
-web: gunicorn taskflow.wsgi
+web: gunicorn config.wsgi
