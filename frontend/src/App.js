@@ -12,14 +12,16 @@ function GetData(setVarDay) {
 			try {
 				const response = await axios.get(
 					'https://django-react-test-leonp84-f46babdc21bd.herokuapp.com/api/data/'
+					// 'http://127.0.0.1:8000/api/data/'
 				);
-				const mon = response.data[0].mon;
-				const tue = response.data[0].tue;
-				const wed = response.data[0].wed;
-				const thu = response.data[0].thu;
-				const fri = response.data[0].fri;
-				const sat = response.data[0].sat;
-				const sun = response.data[0].sun;
+				let i = response.data.length - 1;
+				const mon = response.data[i].mon;
+				const tue = response.data[i].tue;
+				const wed = response.data[i].wed;
+				const thu = response.data[i].thu;
+				const fri = response.data[i].fri;
+				const sat = response.data[i].sat;
+				const sun = response.data[i].sun;
 				setVarDay([mon, tue, wed, thu, fri, sat, sun]);
 			} catch (error) {
 				console.error('Error fetching data:', error);
@@ -29,20 +31,28 @@ function GetData(setVarDay) {
 	}, [setVarDay]);
 }
 
-function BalanceHeader() {
+function BalanceHeader(updateData) {
+	const sum = updateData.updateData.reduce((accumulator, currentValue) => {
+		return accumulator + currentValue;
+	}, 0);
 	return (
 		<div className="balance-header">
 			<div>
-				<span className="fs-6">My balance</span>
+				<span className="fs-6">My balance (€ 1000 budget)</span>
 				<br />
-				<span className="fs-2 font-bold">$921.48</span>
+				<span className="fs-2 font-bold">€ {1000 - sum} </span>
+				<br />
 			</div>
 			<img src={image} alt="Spending Chart Logo" height="48" />
 		</div>
 	);
 }
 
-function SpendingFooter() {
+function SpendingFooter(updateData) {
+	const sum = updateData.updateData.reduce((accumulator, currentValue) => {
+		return accumulator + currentValue;
+	}, 0);
+	const whatsLeft = parseInt((sum / 830) * 100);
 	return (
 		<>
 			<hr className="mt-3" />
@@ -50,12 +60,12 @@ function SpendingFooter() {
 				<div>
 					<span className="small text-muted">Total this month</span>
 					<br />
-					<span className="font-bold fs-1">$478.33</span>
+					<span className="font-bold fs-1">€ {sum} </span>
 				</div>
 				<div className="d-flex flex-column align-items-end">
-					<span className="font-bold">+2.4%</span>
+					<span className="font-bold">{whatsLeft}%</span>
 					<br />
-					<span className="small text-muted">from last month</span>
+					<span className="small text-muted">of last month (€830)</span>
 				</div>
 			</div>
 		</>
@@ -75,13 +85,20 @@ function DayDisplay({ day, amount }) {
 	);
 }
 
-function handleInput(index, e, setVarDay) {
+function handleInput(index, e, setVarDay, varDay) {
+	let updateNum = 0;
+	if (e.target.value === '') {
+		updateNum = 0;
+	} else {
+		updateNum = e.target.value;
+	}
+
 	setVarDay((varDay) =>
-		varDay.map((item, i) => (i === index ? parseInt(e.target.value) : item))
+		varDay.map((item, i) => (i === index ? parseInt(updateNum) : item))
 	);
 }
 
-function SingleDayInput({ index, day, amount, setVarDay }) {
+function SingleDayInput({ index, day, amount, setVarDay, varDay }) {
 	return (
 		<div className="single-day">
 			<div className="form-group d-flex flex-column align-items-center">
@@ -93,29 +110,46 @@ function SingleDayInput({ index, day, amount, setVarDay }) {
 					id={`input-${day}`}
 					placeholder="0"
 					value={amount}
-					onChange={(e) => handleInput(index, e, setVarDay)}
+					onChange={(e) => handleInput(index, e, setVarDay, varDay)}
 				/>
 			</div>
 		</div>
 	);
 }
 
+function HandleClick(varDay) {
+	let newData = {
+		mon: varDay[0],
+		tue: varDay[1],
+		wed: varDay[2],
+		thu: varDay[3],
+		fri: varDay[4],
+		sat: varDay[5],
+		sun: varDay[6],
+	};
+	axios.post('http://127.0.0.1:8000/api/data/', newData).then((res) => {
+		console.log(res);
+		console.log(res.data);
+	});
+}
+
 function App() {
 	let weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 	const [varDay, setVarDay] = useState([]);
 	GetData(setVarDay);
+	let updateData = varDay;
 
 	return (
 		<>
 			<main className="d-flex flex-column align-items-center justify-content-center vh-100">
-				<BalanceHeader />
+				<BalanceHeader updateData={updateData} />
 				<div className="spending-section">
 					<div className="spending-graph">
 						{varDay.map((varDay, index) => (
 							<DayDisplay key={index} day={weekdays[index]} amount={varDay} />
 						))}
 					</div>
-					<SpendingFooter />
+					<SpendingFooter updateData={updateData} />
 				</div>
 				<div className="day-spending">
 					{varDay.map((varDay, index) => (
@@ -125,9 +159,16 @@ function App() {
 							day={weekdays[index]}
 							amount={varDay}
 							setVarDay={setVarDay}
+							varDay={updateData}
 						/>
 					))}
 				</div>
+				<button
+					type="button"
+					className=" mt-3 w-340 btn btn-secondary btn-lg"
+					onClick={() => HandleClick(updateData)}>
+					Save
+				</button>
 			</main>
 		</>
 	);
