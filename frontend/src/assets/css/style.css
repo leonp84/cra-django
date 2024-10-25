@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: hsl(27, 66%, 92%);
+	font-family: 'DM Sans', sans-serif;
+	font-weight: 400;
+	font-size: 18px;
+}
+
+/* Colours */
+
+.soft-red {
+	color: hsl(10, 79%, 65%);
+}
+
+.cyan {
+	color: hsl(186, 34%, 60%);
+}
+
+.dark-brown {
+	color: hsl(25, 47%, 15%);
+}
+
+.medium-brown {
+	color: hsl(28, 10%, 53%);
+}
+
+.cream {
+	color: hsl(27, 66%, 92%);
+}
+
+.very-pale-orange {
+	color: hsl(33, 100%, 98%);
+}
+
+/* Fonts */
+
+.font-normal {
+	font-family: 'DM Sans', sans-serif;
+	font-weight: 400;
+	font-style: normal;
+}
+
+.font-bold {
+	font-family: 'DM Sans', sans-serif;
+	font-weight: 700;
+	font-style: normal;
+}
+
+/* Balance Header */
+
+.balance-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 30px;
+	height: 125px;
+	width: 345px;
+	border-radius: 20px;
+	background-color: #ec755d;
+	color: #fffbf6;
+}
+
+.spending-section {
+	display: flex;
+	flex-direction: column;
+	margin-top: 20px;
+	padding: 25px;
+	width: 345px;
+	border-radius: 20px;
+	background-color: #fffbf6;
+	color: 382314;
+}
+
+.spending-graph {
+	display: flex;
+	padding-top: 30px;
+}
+
+.day {
+	margin: 5px 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: end;
+}
+
+.graph {
+	width: 15px;
+	background-color: #ec755d;
+	border-radius: 5px;
+}
+
+.graph:hover {
+	background-color: hsl(186, 34%, 60%);
+}
+
+.spending-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.day-spending {
+	margin-top: 20px;
+	padding: 10px;
+	padding-bottom: 15px;
+	border-radius: 20px;
+	width: 345px;
+	background-color: #ec755d;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.single-day {
+	color: white;
+	margin: 5px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.single-day input {
+	width: 37px;
+	background-color: transparent;
+	padding: 1px;
+	text-align: center;
+	font-size: 10px;
+}
+
+.form-control {
+	color: white;
+}
+
+footer {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	font-size: 11px;
+	text-align: center;
+	position: absolute;
+	bottom: 10px;
+	font-size: 14px;
+}
+
+footer a {
+	color: hsl(228, 45%, 44%);
+	font-size: 14px;
+}
+
+footer a:hover {
+	color: black;
+	text-decoration: none;
+}
+
+@media screen and (min-width: 550px) {
+	.balance-header,
+	.spending-section,
+	.day-spending {
+		width: 540px;
+	}
+
+	.graph {
+		width: 50px;
+	}
+
+	.day-spending {
+		padding: 10px;
+		padding-bottom: 15px;
+	}
+
+	.single-day {
+		margin: 5px;
+	}
+
+	.single-day input {
+		width: 60px;
+		background-color: transparent;
+		padding: 5px;
+		text-align: center;
+		font-size: 18px;
+	}
+}
