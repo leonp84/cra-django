@@ -30,6 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
+    '.codeinstitute-ide.net',
     '.herokuapp.com',
 ]
 
@@ -64,6 +65,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = [
+     'https://8000-leonp84-cradjango-mmivgu3rlxw.ws.codeinstitute-ide.net',
      'http://localhost:3000',
      'https://django-react-test-leonp84-f46babdc21bd.herokuapp.com',
      ]

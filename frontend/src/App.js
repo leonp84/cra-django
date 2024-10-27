@@ -14,6 +14,7 @@ function GetData(setVarDay) {
 			try {
 				const response = await axios.get(
 					'https://django-react-test-leonp84-f46babdc21bd.herokuapp.com/api/data/'
+					// 'https://8000-leonp84-cradjango-mmivgu3rlxw.ws.codeinstitute-ide.net/api/data/'
 					// 'http://127.0.0.1:8000/api/data/'
 				);
 				let i = response.data.length - 1;
@@ -149,6 +150,7 @@ function HandleClick(varDay) {
 	};
 	let url =
 		'https://django-react-test-leonp84-f46babdc21bd.herokuapp.com/api/data/';
+	// 'https://8000-leonp84-cradjango-mmivgu3rlxw.ws.codeinstitute-ide.net/api/data/';
 	// let url = 'http://127.0.0.1:8000/api/data/'
 	axios.post(url, newData).then((res) => {
 		console.log(res);
